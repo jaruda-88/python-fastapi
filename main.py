@@ -11,3 +11,12 @@ async def root():
 @app.get("/hello/{name}")
 async def say_hello(name: str):
     return {"message": f"Hello {name}"}
+
+
+def run():
+    import uvicorn
+    uvicorn.run(app)
+
+
+if __name__ == "__main__":
+    run()
