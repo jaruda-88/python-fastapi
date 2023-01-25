@@ -12,23 +12,25 @@ class Config:
     BASE_DIR = base_dir
 
     DEBUG: bool = False
-    PROJ_RELOAD: bool = False
+    DB_URL: str = environ.get("DB_URL", "")
+    DB_ECHO: bool = True
+    DB_POOL_RECYCLE: int = 900
 
 
 @dataclass
 class ProdConfig(Config):
-    PROJ_RELOAD: bool = False
+    DEBUG: bool = False
 
 
 @dataclass
 class LocalConfig(Config):
-     PROJ_RELOAD: bool = False
+    DEBUG: bool = True
 
 
 @dataclass
 class TestConfig(Config):
     DEBUG: bool = True
-    PROJ_RELOAD: bool = True
+    DB_URL: str = "mysql+pymysql://admin:amdin@localhost/tb_base?charset=utf8mb4"
 
 
 def conf():
