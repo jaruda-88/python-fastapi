@@ -1,7 +1,7 @@
 version: '3.8'
 
 networks:
-  fast_net:
+  my_net:
     driver: bridge
 
 services:
@@ -17,7 +17,7 @@ services:
       - "3307:3306"
     networks:
       - default
-      - fast_net
+      - my_net
     healthcheck:
       test: "/usr/bin/mysql --user=root --password=admin --execute \"SHOW DATABASES;\""
       interval: 4s
@@ -27,13 +27,14 @@ services:
   api:
     build:
       context: ./app
+    image: "base-fast:0.0.1"
     restart: always
     container_name: fast_api
     ports:
       - "8080:8000"
     networks:
       - default
-      - fast_net
+      - my_net
     depends_on:
       db:
         condition: service_healthy
