@@ -1,6 +1,27 @@
-version: '3.7'
+version: '3.8'
+
+networks:
+  fast_net:
+    driver: bridge
 
 services:
+  db:
+    image: mariadb
+    restart: always
+    container_name: fastapi_db
+    env_file:
+      - "./app/envs/db.env"
+    ports:
+      - "3307:3306"
+    networks:
+      - default
+      - fast_net
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=admin --execute \"SHOW DATABASES;\""
+      interval: 4s
+      timeout: 60s
+      retries: 10
+
   api:
     build:
       context: ./app
@@ -8,3 +29,9 @@ services:
     container_name: fast_api
     ports:
       - "8080:8000"
+    networks:
+      - default
+      - fast_net
+    depends_on:
+      db:
+        condition: service_healthy

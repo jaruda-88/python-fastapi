@@ -2,7 +2,7 @@ from dataclasses import dataclass, asdict
 from os import path, environ
 from pickle import TRUE
 
-base_dir = path.dirname(path.dirname(path.dirname(path.abspath(__file__))))
+base_dir = path.dirname(path.dirname(path.abspath(__file__)))
 
 
 @dataclass
