@@ -9,6 +9,8 @@ services:
     image: mariadb
     restart: always
     container_name: fastapi_db
+    volumes:
+      - ./app/database/data:/var/lib/mysql
     env_file:
       - "./app/envs/db.env"
     ports:
