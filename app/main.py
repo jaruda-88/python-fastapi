@@ -3,6 +3,7 @@ from dataclasses import asdict
 from fastapi import FastAPI
 from common.config import conf
 from routers import index
+from utils.logger import log
 
 
 def create_app():
@@ -10,8 +11,16 @@ def create_app():
 
     app = FastAPI()
 
+    config = conf()
+    dictConfig = asdict(config)
+
+    # logger 정의
+    log.initialize(app, dictConfig)
+
     # 라우터 정의
     app.include_router(index.router)
+
+    # db 정의
 
     return app
 
