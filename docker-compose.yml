@@ -30,6 +30,8 @@ services:
     image: "base-fast:0.0.1"
     restart: always
     container_name: fast_api
+    env_file:
+      - "./app/envs/db.env"
     ports:
       - "8080:8000"
     networks:
