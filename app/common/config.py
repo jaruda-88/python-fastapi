@@ -4,6 +4,28 @@ from pickle import TRUE
 
 base_dir = path.dirname(path.dirname(path.abspath(__file__)))
 
+log_config = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "default": {
+            "()": "uvicorn.logging.DefaultFormatter",
+            "fmt": "%(levelprefix)s %(asctime)s %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+
+        },
+    },
+    "handlers": {
+        "default": {
+            "formatter": "default",
+            "class": "logging.StreamHandler",
+            "stream": "ext://sys.stderr",
+        },
+    },
+    "loggers": {
+        "debug-log": {"handlers": ["default"], "level": "DEBUG"},
+    },
+}
 
 @dataclass
 class Config:
@@ -12,7 +34,6 @@ class Config:
     BASE_DIR = base_dir
 
     DEBUG: bool = False
-    # mysql+mysqldb://{host}:{port}@{username}:{password}/{database}?charser={charset}
     DB_HOST: str = ""
     DB_USER: str = environ.get("MYSQL_USER", "admin")
     DB_PWD: str = environ.get("MYSQL_PASSWORD", "admin")

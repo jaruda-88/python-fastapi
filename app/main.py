@@ -1,12 +1,11 @@
 import uvicorn
 from dataclasses import asdict
 from fastapi import FastAPI
-from common.config import conf
+from common.config import conf, log_config
 from routers import index
 from utils.logger import log
 from database.conn import db
-# import logging
-
+from logging.config import dictConfig
 
 def create_app():
     ''' 
@@ -14,21 +13,22 @@ def create_app():
     :return:
     '''
 
-    app = FastAPI()
-
     config = conf()
-    dictConfig = asdict(config)
+    dictConf = asdict(config)
+
+    app = FastAPI(debug=dictConf.get("DEBUG"))
 
     # logger 정의
-    log.initialize(app, **dictConfig)
+    dictConfig(log_config)
+    log.initialize('debug-log', **dictConf)
 
     # db 정의
-    db.initialize(app, **dictConfig)
+    db.initialize(app, **dictConf)
 
     # 라우터 정의
     app.include_router(index.router)
 
-    log.print("created app!")
+    log.debug("created app!")
     
     return app
 

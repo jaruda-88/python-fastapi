@@ -1,34 +1,45 @@
-from fastapi import FastAPI
 import logging
 
 class Logger():
-    def __init__(self, app:FastAPI=None, **kwargs):
+    def __init__(self, name:str = '', **kwargs):
+        self._logger = None
         self._mode : bool = False
 
-        if app is not None:
-            self.initialize(app=app, **kwargs)
+        if name != '':
+            self.initialize(name, **kwargs)
 
 
-    def initialize(self, app:FastAPI, **kwargs):
+    def initialize(self, name:str, **kwargs):
         '''
         loggger 초기화
         :param app: FastAPI instance
         :param kwargs:
         :return:
         '''
-
-        self._mode = kwargs.get("DEBUG")
+        
+        self._logger = logging.getLogger(name)
+        self._mode = kwargs.setdefault("DEBUG", False)
     
 
-    def print(self, *args):
+    def debug(self, *args):
         '''
-        console log
-        :param args: log context
+        debug log
+        :param args: content
         :return:
         '''
 
         if self._mode == True:
-            logging.info(args)
+            self._logger.debug(args)
+
+
+    def print(self, *args):
+        '''
+        info log
+        :param args: content
+        :return:
+        '''
+
+        self._logger.info(args)
 
 log = Logger()
 

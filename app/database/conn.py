@@ -36,13 +36,13 @@ class SQLAlchemy:
         @app.on_event("startup")
         def startup():
             self._engine.connect()
-            log.print("connected DB!")
+            log.debug("connected DB!")
 
         @app.on_event("shutdown")
         def shutdown():
             self._session.close_all()
             self._engine.dispose()
-            log.print("disconnected DB!")
+            log.debug("disconnected DB!")
 
     
     def get_db(self):
@@ -53,7 +53,9 @@ class SQLAlchemy:
 
         if self._session in None:
             raise Exception("called initialize")
+
         db_session = None
+
         try:
             db_session = self._session()
             yield db_session
