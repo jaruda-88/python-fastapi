@@ -27,6 +27,7 @@ log_config = {
     },
 }
 
+
 @dataclass
 class Config:
     ''' 기본 configuration '''

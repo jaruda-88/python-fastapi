@@ -1,15 +1,15 @@
 import logging
 
 class Logger():
-    def __init__(self, name:str = '', **kwargs):
+    def __init__(self, name:str = '', debug:bool = False):
         self._logger = None
-        self._mode : bool = False
+        self._mode : bool = debug
 
         if name != '':
-            self.initialize(name, **kwargs)
+            self.initialize(name, debug)
 
 
-    def initialize(self, name:str, **kwargs):
+    def initialize(self, name:str, debug: bool):
         '''
         loggger 초기화
         :param app: FastAPI instance
@@ -18,7 +18,7 @@ class Logger():
         '''
         
         self._logger = logging.getLogger(name)
-        self._mode = kwargs.setdefault("DEBUG", False)
+        self._mode = debug
     
 
     def debug(self, *args):

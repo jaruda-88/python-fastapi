@@ -15,12 +15,13 @@ def create_app():
 
     config = conf()
     dictConf = asdict(config)
+    debug: bool = dictConf.get("DEBUG")
 
-    app = FastAPI(debug=dictConf.get("DEBUG"))
+    app = FastAPI(debug=debug)
 
     # logger 정의
     dictConfig(log_config)
-    log.initialize('debug-log', **dictConf)
+    log.initialize('debug-log', debug)
 
     # db 정의
     db.initialize(app, **dictConf)
